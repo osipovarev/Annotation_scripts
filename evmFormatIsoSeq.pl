@@ -1,4 +1,8 @@
 #!/usr/bin/env perl
+#
+# author = David Jebb, 2019
+#
+
 use warnings;
 use strict ;
 
