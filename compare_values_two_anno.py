@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 #
-#
-#
+'''
+This script takes two files with annotations of the same list of IDs (e.g genes);
+and checks if values corresponding to the same ID are similar enough.
+'''
+
 import argparse
 import itertools
 
