@@ -20,6 +20,6 @@ with open(args.isoforms, 'r') as inf:
 	for line in inf.readlines():
 		g = line.split()[0]
 		t = line.split()[1]
-		new_t = g.replace(g + '_', '')
+		new_t = t.replace(g + '_', '')
 		new_line = '{}\t{}'.format(g, new_t)
 		print(new_line)
