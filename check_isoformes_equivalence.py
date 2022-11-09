@@ -13,9 +13,11 @@ def read_into_dict(file):
     iso_dict = defaultdict(list)
     with open(file, 'r') as inf:
         for line in inf.readlines():
-           gene = line.rstrip().split()[0]
-           trans = line.rstrip().split()[1]
-           iso_dict[gene].append(trans)
+            elements = line.rstrip().split()
+            if len(elements) == 2:
+                gene = line.rstrip().split()[0]
+                trans = line.rstrip().split()[1]
+                iso_dict[gene].append(trans)
     return iso_dict
 
 
@@ -48,11 +50,11 @@ def main():
     ## Try to find for each entry in isofomrs 1 an equivalent from isoforms 2
     for t in rev_iso_dict1:
         if t in rev_iso_dict2:
-            #print("{} == {}".format(rev_iso_dict1[t], rev_iso_dict2[t]))
+            print("{} == {}".format(rev_iso_dict1[t], rev_iso_dict2[t]))
             pass
         else:
-            print("Found no equivalent for {}. {}. {}".format(rev_iso_dict1[t], t, iso_dict2[rev_iso_dict1[t]]))
-
+            #print("Found no equivalent for {}. {}. {}".format(rev_iso_dict1[t], t, iso_dict2[rev_iso_dict1[t]]))
+            pass
 
 
 if __name__ == "__main__":
