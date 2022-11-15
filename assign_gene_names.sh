@@ -44,12 +44,12 @@ echo -e "NB: using 80% CDS overlap requirement"
 overlapSelect -statsOutput -strand -inCds -overlapThreshold=0.8 -inFmt=bed -selectFmt=bed $NAMEDANNO $ANNOBED stdout | cut -f1-2 | rev | cut -d"." -f2- | rev | awk '{print $2"\t"$1}' > $ANNODICT
 
 echo -e "Running renamig using renameToHLscaffolds.py....."
-renameToHLscaffolds.py -a $ANNODICT -d <(awk '{print $2","$1}' $NAMESFILE) | awk '{print $2","$1}' | sort -u > $NAMESDICT
+renameToHLscaffolds.py -c 1 -a $ANNODICT -d <(awk '{print $2","$1}' $NAMESFILE) | grep -v  ^reg_ | grep -v ^rna- | awk '{print $2","$1}' | sort -u > $NAMESDICT
 
 echo -e "Giving geneName_ prefix to each transcript....."
 replace_names_from_dict.py -a $ANNOBED -d $NAMESDICT -p > $OUTFILE
 
 echo -e "Cleaning up....."
-rm $ANNODICT $NAMESDICT
+#rm $ANNODICT $NAMESDICT
 
 echo -e "All Done! Check $OUTFILE"
