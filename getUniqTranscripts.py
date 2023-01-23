@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-#
-#
+
+
 # To get unique transcripts of a file run e.g:\
 # e.g usage: getUniqTrascripts.py -f HLparMaj1.ncbi.bed > uniq.HLparMaj1.ncbi.bed
-#
+
 
 import argparse
 import sys
@@ -17,58 +17,58 @@ def get_uniq_transcripts(bed_file, a_score, a_color):
     overlap_transcripts = {}
     with open(bed_file, 'r') as inf:
         for line in inf.readlines():
-            transc_name, score, color = line.split()[3], line.split()[4], line.split()[8]
+            transc_name, score, color = line.split('\t')[3], line.split('\t')[4], line.split('\t')[8]
 
             # get transcript info considering which fields are important
-            if args.color and args.score:
+            if a_color and a_score:
                 # both score and color are considered
-                transc_info = '\t'.join(line.split()[:3] + line.split()[4:])
-            elif args.color and not args.score:
+                transc_info = '\t'.join(line.split('\t')[:3] + line.split('\t')[4:])
+            elif a_color and not a_score:
                 # only color is considered
-                transc_info = '\t'.join(line.split()[:3] + line.split()[5:])
-            elif args.score and not args.color:
+                transc_info = '\t'.join(line.split('\t')[:3] + line.split('\t')[5:])
+            elif a_score and not a_color:
                 # only score is considered
-                transc_info = '\t'.join(line.split()[:3] + line.split()[4:8] + line.split()[9:])
+                transc_info = '\t'.join(line.split('\t')[:3] + line.split('\t')[4:8] + line.split('\t')[9:])
             else:
                 # both color and score are ignored
-                transc_info = '\t'.join(line.split()[:3] + line.split()[5:8] + line.split()[9:])
+                transc_info = '\t'.join(line.split('\t')[:3] + line.split('\t')[5:8] + line.split('\t')[9:])
 
 
             if (transc_info in overlap_transcripts):
-                sys.stderr.write('DUPLICATION: {}\t{}'.format(transc_name, '\t'.join(transc_info.split())+'\n'))
+                sys.stderr.write('DUPLICATION: {}\t{}'.format(transc_name, '\t'.join(transc_info.split('\t'))+'\n'))
             else:
                 overlap_transcripts[transc_info] = (transc_name, score, color)
     return  overlap_transcripts
 
 
-def output_uniq_transcripts(overlap_transcripts):
+def output_uniq_transcripts(overlap_transcripts, a_color, a_score):
     ## Outputs unique elements of the overlap_transcripts dictionary
 
     for transc_info in overlap_transcripts:
-        transc_names = overlap_transcripts[transc_info]
+        transc_var_parts = overlap_transcripts[transc_info]
 
         # assemble a new annotation line considering fields excluded before
-        if args.color and args.score:
+        if a_color and a_score:
             # both score and color are considered
-            newBedLine = '\t'.join(transc_info.split()[:3]) + '\t' + transc_names[0][0] + '\t' + \
-                         transc_names[0][1] + '\t' + '\t'.join(transc_info.split()[4:7]) + '\t' + \
-                         transc_names[0][2] + '\t' + '\t'.join(transc_info.split()[8:])
-        elif args.color and not args.score:
+            newBedLine = '\t'.join(transc_info.split('\t')[:3]) + '\t' + transc_var_parts[0] + '\t' + \
+                         transc_var_parts[1] + '\t' + '\t'.join(transc_info.split('\t')[4:7]) + '\t' + \
+                         transc_var_parts[2] + '\t' + '\t'.join(transc_info.split('\t')[8:])
+        elif a_color and not a_score:
             # only color is considered
-            newBedLine = '\t'.join(transc_info.split()[:3]) + '\t' + transc_names[0][0] + '\t' + \
-                         transc_names[0][1] + '\t' + '\t'.join(transc_info.split()[3:6]) + '\t' + \
-                         transc_names[0][2] + '\t' + '\t'.join(transc_info.split()[7:])
-        elif args.score and not args.color:
+            newBedLine = '\t'.join(transc_info.split('\t')[:3]) + '\t' + transc_var_parts[0] + '\t' + \
+                         transc_var_parts[1] + '\t' + '\t'.join(transc_info.split('\t')[3:6]) + '\t' + \
+                         transc_var_parts[2] + '\t' + '\t'.join(transc_info.split('\t')[7:])
+        elif a_score and not a_color:
             # only score is considered
-            newBedLine = '\t'.join(transc_info.split()[:3]) + '\t' + transc_names[0][0] + '\t' + \
-                         transc_names[0][1] + '\t' + '\t'.join(transc_info.split()[4:7]) + '\t' + \
-                         transc_names[0][2] + '\t' + '\t'.join(transc_info.split()[7:])
+            newBedLine = '\t'.join(transc_info.split('\t')[:3]) + '\t' + transc_var_parts[0] + '\t' + \
+                         transc_var_parts[1] + '\t' + '\t'.join(transc_info.split('\t')[4:7]) + '\t' + \
+                         transc_var_parts[2] + '\t' + '\t'.join(transc_info.split('\t')[7:])
         else:
             # both color and score are ignored
-            newBedLine = '\t'.join(transc_info.split()[:3]) + '\t' + transc_names[0][0] + '\t' + \
-                         transc_names[0][1] + '\t' + '\t'.join(transc_info.split()[3:6]) + '\t' + \
-                         transc_names[0][2] + '\t' + '\t'.join(transc_info.split()[6:])
-        print(newBedLine)
+            newBedLine = '\t'.join(transc_info.split('\t')[:3]) + '\t' + transc_var_parts[0] + '\t' + \
+                         transc_var_parts[1] + '\t' + '\t'.join(transc_info.split('\t')[3:6]) + '\t' + \
+                         transc_var_parts[2] + '\t' + '\t'.join(transc_info.split('\t')[6:])
+        print(newBedLine.rstrip('\n'))
 
 
 def main():
@@ -83,9 +83,9 @@ def main():
 
     ## Make a dictionary of unique transcripts
     overlap_transcripts = get_uniq_transcripts(args.filebed, args.score, args.color)
-
+    
     ## Print unique transcripts
-    output_uniq_transcripts(overlap_transcripts)
+    output_uniq_transcripts(overlap_transcripts, args.score, args.color)
 
 
 if __name__ == "__main__":
