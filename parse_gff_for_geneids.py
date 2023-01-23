@@ -20,7 +20,7 @@ def extract_ids_from_exon_lines(file):
 
 			## check if it a gff annotation line
 			if len(line_elements) == 9:
-				if line_elements[2] == 'exon':
+				if line_elements[2] == 'mRNA':
 					exon_info = line_elements[8]
 					exon_elements = exon_info.replace(',', ';').split(';')
 					for el in exon_elements:
