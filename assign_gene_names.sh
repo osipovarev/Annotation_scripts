@@ -51,6 +51,6 @@ echo -e "Giving geneName_ prefix to each transcript....."
 replace_names_from_dict.py -a $ANNOBED -d $NAMESDICT -p  > $OUTFILE
 
 echo -e "Cleaning up....."
-#rm $ANNODICT $NAMESDICT
+rm $ANNODICT $NAMESDICT
 
 echo -e "All Done! Check $OUTFILE"
