@@ -21,7 +21,7 @@ def read_anno_to_dict(file, column):
 	return anno_dict
 
 
-def enumerate_nonuniq(anno_dict, suffix):
+def enumerate_nonuniq(anno_dict, suffix, sep):
 	## Goes through dictionary, if a name corresponds \
 	## to multiple transcripts, gives them uniq lables
 
@@ -33,8 +33,9 @@ def enumerate_nonuniq(anno_dict, suffix):
 		else:
 			for i in range(len(all_transcripts)):
 				new_id = '{}{}{}'.format(id_curr, suffix, i)
-				new_info = all_transcripts[i].replace(id_curr, new_id)
-				print(new_info)
+				l = all_transcripts[i]
+				new_line = sep.join(l[ :ncol - 1] + [new_id] +  l[ncol: ])
+				print(new_line)
 
 
 def main():
@@ -60,14 +61,21 @@ def main():
 		type=str,
 		default='_', 
 		help='suffix to give in addition to enumeration')
-	
+	parser.add_argument(
+		'-sep',
+		'--sep',
+		type=str,
+		default='\t',
+		help='specify field separator of the anno file; default=tab'
+		)
+
 	args = parser.parse_args()
 
 	## Read annotation file into a dictionary
 	anno_dict = read_anno_to_dict(args.annotation, args.column)
 
 	## Give unique label to duplicated IDs and output updated annotation
-	enumerate_nonuniq(anno_dict, args.suffix)
+	enumerate_nonuniq(anno_dict, args.suffix, args.sep)
 
 
 
