@@ -32,7 +32,7 @@ def enumerate_nonuniq(anno_dict, suffix, sep, ncol):
 		else:
 			for i in range(len(all_transcripts)):
 				new_id = '{}{}{}'.format(id_curr, suffix, i)
-				l = all_transcripts[i]
+				l = all_transcripts[i].split(sep)
 				new_line = sep.join(l[ :ncol - 1] + [new_id] +  l[ncol: ])
 				print(new_line)
 
