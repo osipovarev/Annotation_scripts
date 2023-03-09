@@ -17,11 +17,10 @@ def read_anno_to_dict(file, column):
 			info = line.rstrip()
 			id_curr = info.split()[column - 1]
 			anno_dict[id_curr].append(info)
-
 	return anno_dict
 
 
-def enumerate_nonuniq(anno_dict, suffix, sep):
+def enumerate_nonuniq(anno_dict, suffix, sep, ncol):
 	## Goes through dictionary, if a name corresponds \
 	## to multiple transcripts, gives them uniq lables
 
@@ -75,7 +74,7 @@ def main():
 	anno_dict = read_anno_to_dict(args.annotation, args.column)
 
 	## Give unique label to duplicated IDs and output updated annotation
-	enumerate_nonuniq(anno_dict, args.suffix, args.sep)
+	enumerate_nonuniq(anno_dict, args.suffix, args.sep, args.column)
 
 
 
