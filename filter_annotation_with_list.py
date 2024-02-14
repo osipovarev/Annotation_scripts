@@ -28,7 +28,7 @@ def main():
     column = args.column
     with open(args.annotation, 'r') as inf:
         for line in inf.readlines():
-            anno_id = line.split()[column - 1]
+            anno_id = line.split('\t')[column - 1]
             if args.suffix:
                 anno_id = anno_id.split('.')[0]
             if args.but:
