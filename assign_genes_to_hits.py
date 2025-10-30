@@ -39,7 +39,7 @@ def assign_genes_to_hits(hits_file, uniprot_db_dict, suffix):
             # old version of blastp output
             #uniprot_id = line.split()[1].split('|')[1]
             # new version of blastp output
-            uniprot_id = line.split()[1]
+            uniprot_id = line.split()[1].split('|')[1]
             if uniprot_db_dict[uniprot_id] != 'NO_UNIREF_GENE':
                 print('{},{}-{}_{}'.format(transcript, uniprot_db_dict[uniprot_id], suffix, transcript))
     return
